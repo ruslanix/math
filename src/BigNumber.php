@@ -12,23 +12,7 @@ use Brick\Math\Exception\RoundingNecessaryException;
  */
 abstract class BigNumber
 {
-    /**
-     * The regular expression used to parse integer, decimal and rational numbers.
-     *
-     * @var string
-     */
-    private $regexp =
-        '/^' .
-        '(?<integral>[\-\+]?[0-9]+)' .
-        '(?:' .
-            '(?:' .
-                '(?:\.(?<fractional>[0-9]+))?' .
-                '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
-            ')' . '|' . '(?:' .
-                '(?:\/(?<denominator>[0-9]+))?' .
-            ')' .
-        ')?' .
-        '$/';
+
 
     /**
      * Creates a BigNumber of the given value.
@@ -61,7 +45,25 @@ abstract class BigNumber
 
         $value = (string) $value;
 
-        if (preg_match($this->regexp, $value, $matches) !== 1) {
+        /**
+         * The regular expression used to parse integer, decimal and rational numbers.
+         *
+         * By DeskPro: had to move from class constant to regular var to support php5.5
+         */
+        $regexp =
+            '/^' .
+            '(?<integral>[\-\+]?[0-9]+)' .
+            '(?:' .
+                '(?:' .
+                    '(?:\.(?<fractional>[0-9]+))?' .
+                    '(?:[eE](?<exponent>[\-\+]?[0-9]+))?' .
+                ')' . '|' . '(?:' .
+                    '(?:\/(?<denominator>[0-9]+))?' .
+                ')' .
+            ')?' .
+            '$/';
+
+        if (preg_match($regexp, $value, $matches) !== 1) {
             throw new NumberFormatException('The given value does not represent a valid number.');
         }
 
