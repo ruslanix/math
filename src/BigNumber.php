@@ -19,7 +19,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
      *
      * @var string
      */
-    private const PARSE_REGEXP =
+    private $regexp =
         '/^' .
         '(?<integral>[\-\+]?[0-9]+)' .
         '(?:' .
@@ -63,7 +63,7 @@ abstract class BigNumber implements \Serializable, \JsonSerializable
 
         $value = (string) $value;
 
-        if (preg_match(self::PARSE_REGEXP, $value, $matches) !== 1) {
+        if (preg_match($this->regexp, $value, $matches) !== 1) {
             throw new NumberFormatException(sprintf('The given value "%s" does not represent a valid number.', $value));
         }
 
